@@ -69,6 +69,7 @@ const Header = ({setRefresh}) => {
 
     // Linking.openURL(`https://leetcode.com/problems/${question}/description/`)
   };
+  // console.log(problemsetQuestionList.length)
 
   return (
     <>

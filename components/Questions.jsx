@@ -7,12 +7,14 @@ import {
   Text,
   TouchableOpacity,
   View,
+  ActivityIndicator,
 } from "react-native";
 
 import { FontAwesome } from "@expo/vector-icons";
 
-export default function Questions({selectedDate, refresh }) {
+export default function Questions({ selectedDate, refresh }) {
   const [tab, setTab] = useState("pending");
+  const [loading, setLoading] = useState(true);
   const [questions, setQuestions] = useState([]);
   const [pending, setPending] = useState([]);
   const [completed, setCompleted] = useState([]);
@@ -34,12 +36,14 @@ export default function Questions({selectedDate, refresh }) {
       // console.log(data);
     } catch (error) {
       console.log("get tasks error :" + error);
+    } finally {
+      setLoading(false);
     }
   };
   useEffect(() => {
+    setLoading(true);
     fetchData();
-  }, [selectedDate, refresh,tab]);
-  
+  }, [selectedDate, refresh, tab]);
 
   const markCompleted = async (taskId) => {
     try {
@@ -52,7 +56,7 @@ export default function Questions({selectedDate, refresh }) {
       };
 
       const response = await fetch(url, options);
-      console.log("Question completed");
+      // console.log("Question completed");
 
       await fetchData();
     } catch (error) {
@@ -208,7 +212,7 @@ export default function Questions({selectedDate, refresh }) {
             </Text>
           </TouchableOpacity>
         ) : (
-          <FontAwesome name="check" size={20} color={"#69d028"}/>
+          <FontAwesome name="check" size={20} color={"#69d028"} />
         )}
       </View>
     </View>
@@ -221,14 +225,18 @@ export default function Questions({selectedDate, refresh }) {
   return (
     <>
       {renderTabs()}
-      <View style={{ flex: 1, backgroundColor: "" }}>
-        <FlatList
-          data={filterQuestions}
-          renderItem={renderQuestions}
-          keyExtractor={(item) => item._id}
-          contentContainerStyle={{}}
-        />
-      </View>
+      {loading ? (
+        <ActivityIndicator size={"large"} color={"#FFB116"} />
+      ) : (
+        <View style={{ flex: 1, backgroundColor: "" }}>
+          <FlatList
+            data={filterQuestions}
+            renderItem={renderQuestions}
+            keyExtractor={(item) => item._id}
+            contentContainerStyle={{}}
+          />
+        </View>
+      )}
     </>
   );
 }
