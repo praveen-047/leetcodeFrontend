@@ -106,7 +106,7 @@ const Header = ({setRefresh}) => {
             <Text
               style={{ fontSize: 14, fontWeight: 600, marginHorizontal: 9 }}
             >
-              Leetcode Question (1 to 3800)
+              Leetcode Question (1 to 3962)
             </Text>
             <TextInput
               style={{
